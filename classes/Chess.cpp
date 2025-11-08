@@ -46,6 +46,7 @@ void Chess::setUpBoard()
     _gameOptions.rowY = 8;
 
     _grid->initializeChessSquares(pieceSize, "boardsquare.png");
+
     FENtoBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
 
     startGame();
@@ -55,8 +56,115 @@ void Chess::FENtoBoard(const std::string& fen) {
     // convert a FEN string to a board
     // FEN is a space delimited string with 6 fields
     // 1: piece placement (from white's perspective)
+
+    int curIndex = 0;
+    int curBoardIndex = 0;
+    int playerNumber;
+    ChessPiece curChessPiece;
+    while (curBoardIndex < 64)
+    {
+        //never supposed to be here
+        if (fen[curIndex] == ' ')
+        {
+            std::cout << "error in FEN string" << std::endl;
+            return;
+        }
+        //skip line indexs
+        if (fen[curIndex] == '/')
+        {
+            curIndex++;
+            continue;
+        }
+        //48 is 0, 56 is 8
+        if (fen[curIndex] > 48 && fen[curIndex] <= 56)
+        {
+            curBoardIndex += fen[curIndex] - 48;
+            curIndex++;
+            continue;
+        }
+
+        
+        switch (fen[curIndex])
+        {
+            case 'p':
+                playerNumber = 1;
+                curChessPiece = Pawn;
+                break;
+            case 'n':
+                playerNumber = 1;
+                curChessPiece = Knight;
+                break;
+            case 'b':
+                playerNumber = 1;
+                curChessPiece = Bishop;
+                break;
+
+            case 'r':
+                playerNumber = 1;
+                curChessPiece = Rook;
+                break;
+
+            case 'q':
+                playerNumber = 1;
+                curChessPiece = Queen;
+                break;
+            case 'k':
+                playerNumber = 1;
+                curChessPiece = King;
+                break;
+            case 'P':
+                playerNumber = 0;
+                curChessPiece = Pawn;
+                break;
+            case 'N':
+                playerNumber = 0;
+                curChessPiece = Knight;
+                break;
+            case 'B':
+                playerNumber = 0;
+                curChessPiece = Bishop;
+                break;
+
+            case 'R':
+                playerNumber = 0;
+                curChessPiece = Rook;
+                break;
+
+            case 'Q':
+                playerNumber = 0;
+                curChessPiece = Queen;
+                break;
+            case 'K':
+                playerNumber = 0;
+                curChessPiece = King;
+                break;
+            default:
+            //for invalid
+                playerNumber = -1;
+                break;
+        }
+
+        if (playerNumber < 0)
+        {
+            std::cout << "FEN string contains unknown letter" << std::endl;
+            return;
+        }
+
+        int x_i = curBoardIndex % 8;
+        int y_i =  7 - curBoardIndex / 8;
+
+        _grid->getSquare(x_i, y_i)->dropBitAtPoint(
+            PieceForPlayer(playerNumber, curChessPiece),
+            { (float)x_i, (float) y_i}
+        );
+        curIndex++;
+        curBoardIndex++;
+    }
+
+
+
     // NOT PART OF THIS ASSIGNMENT BUT OTHER THINGS THAT CAN BE IN A FEN STRING
-    // ARE BELOW
+    // ARE BELOW3
     // 2: active color (W or B)
     // 3: castling availability (KQkq or -)
     // 4: en passant target square (in algebraic notation, or -)

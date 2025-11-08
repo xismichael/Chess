@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Darwin-clang++"
+	BuildStamp="20251107-2045-Experimental"
+	Name="eduroam-169-233-159-146.ucsc.edu"
+	Generator="ctest-4.0.3"
+	CompilerName="/usr/bin/clang++"
+	CompilerVersion="17.0.0.17000319"
+	OSName="macOS"
+	Hostname="eduroam-169-233-159-146.ucsc.edu"
+	OSRelease="15.6.1"
+	OSVersion="24G90"
+	OSPlatform="arm64"
+	Is64Bits="1"
+	VendorString="Apple"
+	VendorID="Apple"
+	FamilyID="0"
+	ModelID="0"
+	ModelName="Apple M4 Pro"
+	ProcessorCacheSize="131072"
+	NumberOfLogicalCPU="14"
+	NumberOfPhysicalCPU="14"
+	TotalVirtualMemory="3072"
+	TotalPhysicalMemory="49152"
+	LogicalProcessorsPerPhysical="14"
+	ProcessorClockFrequency="0"
+	>
+	<Testing>
+		<StartDateTime>Nov 07 14:47 PST</StartDateTime>
+		<StartTestTime>1762555662</StartTestTime>
+		<TestList/>
+		<EndDateTime>Nov 07 14:47 PST</EndDateTime>
+		<EndTestTime>1762555662</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>
