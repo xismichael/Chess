@@ -92,7 +92,7 @@ void Chess::FENtoBoard(const std::string& fen) {
             curIndex++;
             continue;
         }
-        //48 is 0, 56 is 8
+        //48 is 0, 56 is 8acc
         if (fen[curIndex] > 48 && fen[curIndex] <= 56)
         {
             curBoardIndex += fen[curIndex] - 48;
@@ -278,8 +278,6 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
     initializePawnMoves(nextPlayer);
 }
 
-// ========== BITBOARD MANAGEMENT ==========
-
 void Chess::initializeBitboards()
 {
     //white
@@ -427,7 +425,6 @@ BitboardElement Chess::getPieceBitboard(ChessPiece piece, int playerNumber) cons
     }
 }
 
-// ========== KNIGHT MOVE GENERATION ==========
 
 void Chess::initializeKnightMoves()
 {
@@ -459,8 +456,6 @@ void Chess::initializeKnightMoves()
 
 void Chess::initializeKingMoves()
 {
-    // Pre-compute all possible king moves for each square
-    // King moves: 8 possible directions (one square in any direction)
     int kingMoves[8][2] = {
         {-1, -1}, {-1, 0}, {-1, 1},
         { 0, -1}, { 0, 1},
