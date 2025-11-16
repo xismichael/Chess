@@ -6,7 +6,7 @@
 	CompilerName="/usr/bin/clang++"
 	CompilerVersion="17.0.0.17000319"
 	OSName="macOS"
-	Hostname="eduroam-169-233-159-146.ucsc.edu"
+	Hostname="Michaels-MacBook-Pro.local"
 	OSRelease="15.6.1"
 	OSVersion="24G90"
 	OSPlatform="arm64"
@@ -19,17 +19,17 @@
 	ProcessorCacheSize="131072"
 	NumberOfLogicalCPU="14"
 	NumberOfPhysicalCPU="14"
-	TotalVirtualMemory="3072"
+	TotalVirtualMemory="0"
 	TotalPhysicalMemory="49152"
 	LogicalProcessorsPerPhysical="14"
 	ProcessorClockFrequency="0"
 	>
 	<Testing>
-		<StartDateTime>Nov 07 14:47 PST</StartDateTime>
-		<StartTestTime>1762555662</StartTestTime>
+		<StartDateTime>Nov 16 14:00 PST</StartDateTime>
+		<StartTestTime>1763330448</StartTestTime>
 		<TestList/>
-		<EndDateTime>Nov 07 14:47 PST</EndDateTime>
-		<EndTestTime>1762555662</EndTestTime>
+		<EndDateTime>Nov 16 14:00 PST</EndDateTime>
+		<EndTestTime>1763330448</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
