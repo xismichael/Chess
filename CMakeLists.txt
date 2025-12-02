@@ -60,11 +60,11 @@ add_executable(demo Application.cpp
                           classes/Square.cpp
                           classes/ChessSquare.cpp
                           classes/Grid.cpp
+                          classes/Chess.cpp
                           classes/TicTacToe.cpp
                           classes/Checkers.cpp
                           classes/Othello.cpp
                           classes/Connect4.cpp
-                          classes/Chess.cpp
                           ${BCKD_FILE}
                           ${MAIN_FILE}
                           ${IMPL_FILE}
@@ -92,6 +92,7 @@ add_custom_command(
           "$<TARGET_FILE_DIR:demo>/resources"
   COMMENT "Copying resources to runtime output dir"
 )
+
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

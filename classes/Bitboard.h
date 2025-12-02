@@ -84,15 +84,21 @@ struct BitMove {
     uint8_t from;
     uint8_t to;
     uint8_t piece;
+    uint8_t promotionPiece;  // NoPiece for normal moves
     
-    BitMove(int from, int to, ChessPiece piece)
-        : from(from), to(to), piece(piece) { }
+    BitMove(int from, int to, ChessPiece piece, ChessPiece promotion = NoPiece)
+        : from(from), to(to), piece(piece), promotionPiece(promotion) { }
         
-    BitMove() : from(0), to(0), piece(NoPiece) { }
+    BitMove() : from(0), to(0), piece(NoPiece), promotionPiece(NoPiece) { }
     
     bool operator==(const BitMove& other) const {
         return from == other.from && 
                to == other.to && 
-               piece == other.piece;
+               piece == other.piece &&
+               promotionPiece == other.promotionPiece;
+    }
+    
+    bool isPromotion() const {
+        return promotionPiece != NoPiece;
     }
 };

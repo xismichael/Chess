@@ -79,6 +79,12 @@
 },
 {
   "directory": "/Users/michaelxi/Projects/CMPM123/Chess/build",
+  "command": "/usr/bin/clang++ -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/demo.dir/classes/Chess.cpp.o -c /Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp",
+  "file": "/Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp",
+  "output": "CMakeFiles/demo.dir/classes/Chess.cpp.o"
+},
+{
+  "directory": "/Users/michaelxi/Projects/CMPM123/Chess/build",
   "command": "/usr/bin/clang++ -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/demo.dir/classes/TicTacToe.cpp.o -c /Users/michaelxi/Projects/CMPM123/Chess/classes/TicTacToe.cpp",
   "file": "/Users/michaelxi/Projects/CMPM123/Chess/classes/TicTacToe.cpp",
   "output": "CMakeFiles/demo.dir/classes/TicTacToe.cpp.o"
@@ -100,12 +106,6 @@
   "command": "/usr/bin/clang++ -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/demo.dir/classes/Connect4.cpp.o -c /Users/michaelxi/Projects/CMPM123/Chess/classes/Connect4.cpp",
   "file": "/Users/michaelxi/Projects/CMPM123/Chess/classes/Connect4.cpp",
   "output": "CMakeFiles/demo.dir/classes/Connect4.cpp.o"
-},
-{
-  "directory": "/Users/michaelxi/Projects/CMPM123/Chess/build",
-  "command": "/usr/bin/clang++ -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include -g -std=gnu++20 -arch arm64 -o CMakeFiles/demo.dir/classes/Chess.cpp.o -c /Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp",
-  "file": "/Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp",
-  "output": "CMakeFiles/demo.dir/classes/Chess.cpp.o"
 },
 {
   "directory": "/Users/michaelxi/Projects/CMPM123/Chess/build",

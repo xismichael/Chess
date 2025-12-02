@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Darwin-clang++"
-	BuildStamp="20251107-2045-Experimental"
+	BuildStamp="20251202-0353-Experimental"
 	Name="eduroam-169-233-159-146.ucsc.edu"
 	Generator="ctest-4.0.3"
 	CompilerName="/usr/bin/clang++"
 	CompilerVersion="17.0.0.17000319"
 	OSName="macOS"
-	Hostname="Michaels-MacBook-Pro.local"
+	Hostname="eduroam-169-233-248-22.ucsc.edu"
 	OSRelease="15.6.1"
 	OSVersion="24G90"
 	OSPlatform="arm64"
@@ -19,17 +19,17 @@
 	ProcessorCacheSize="131072"
 	NumberOfLogicalCPU="14"
 	NumberOfPhysicalCPU="14"
-	TotalVirtualMemory="0"
+	TotalVirtualMemory="5120"
 	TotalPhysicalMemory="49152"
 	LogicalProcessorsPerPhysical="14"
 	ProcessorClockFrequency="0"
 	>
 	<Testing>
-		<StartDateTime>Nov 16 14:00 PST</StartDateTime>
-		<StartTestTime>1763330448</StartTestTime>
+		<StartDateTime>Dec 01 19:53 PST</StartDateTime>
+		<StartTestTime>1764647616</StartTestTime>
 		<TestList/>
-		<EndDateTime>Nov 16 14:00 PST</EndDateTime>
-		<EndTestTime>1763330448</EndTestTime>
+		<EndDateTime>Dec 01 19:53 PST</EndDateTime>
+		<EndTestTime>1764647616</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

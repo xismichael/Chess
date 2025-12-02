@@ -76,6 +76,58 @@ namespace ClassGame {
                         ImGui::Text("%s", stateString.substr(y*stride,stride).c_str());
                     }
                     ImGui::Text("Current Board State: %s", game->stateString().c_str());
+                    
+                    // AI Player Selection
+                    if (game->gameHasAI())
+                    {
+                        ImGui::Separator();
+                        ImGui::Text("=== AI SETTINGS ===");
+                        
+                        static bool player1AI = false;
+                        if (ImGui::Checkbox("Player 1 AI (White)", &player1AI))
+                        {
+                            game->getPlayerAt(0)->setAIPlayer(player1AI);
+                        }
+                        ImGui::SameLine();
+                        static bool player2AI = false;
+                        if (ImGui::Checkbox("Player 2 AI (Black)", &player2AI))
+                        {
+                            game->getPlayerAt(1)->setAIPlayer(player2AI);
+                        }
+                        
+                        if (gameOver)
+                        {
+                            player1AI = false;
+                            player2AI = false;
+                        }
+                        ImGui::Separator();
+                    }
+                    
+                    // Check if this is a Chess game and if promotion is pending
+                    Chess* chessGame = dynamic_cast<Chess*>(game);
+                    if (chessGame && chessGame->isPromotionPending()) {
+                        ImGui::Separator();
+                        ImGui::Text("=== PAWN PROMOTION ===");
+                        ImGui::Text("Choose promotion piece:");
+                        
+                        // Create a 2x2 grid of buttons
+                        if (ImGui::Button("Queen", ImVec2(120, 40))) {
+                            chessGame->completePromotion(Queen);
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::Button("Rook", ImVec2(120, 40))) {
+                            chessGame->completePromotion(Rook);
+                        }
+                        
+                        if (ImGui::Button("Bishop", ImVec2(120, 40))) {
+                            chessGame->completePromotion(Bishop);
+                        }
+                        ImGui::SameLine();
+                        if (ImGui::Button("Knight", ImVec2(120, 40))) {
+                            chessGame->completePromotion(Knight);
+                        }
+                        ImGui::Separator();
+                    }
                 }
                 ImGui::End();
 
