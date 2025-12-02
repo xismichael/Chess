@@ -774,7 +774,7 @@ void Chess::updateAI()
     int bestScore = -999999;
     int alpha = -999999;
     int beta = 999999;
-    int depth = 4;
+    int depth = 5;
     
     // Iterate through all legal moves
     for (const BitMove& move : legalMoves) {
