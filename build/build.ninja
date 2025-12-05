@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: tictactoe
-# Configurations: Debug
+# Configurations: Release
 # =============================================================================
 
 #############################################
@@ -24,7 +24,7 @@ ninja_required_version = 1.5
 #############################################
 # Set configuration variable for custom commands.
 
-CONFIGURATION = Debug
+CONFIGURATION = Release
 # =============================================================================
 # Include auxiliary files.
 
@@ -217,170 +217,170 @@ build ContinuousSubmit: phony CMakeFiles/ContinuousSubmit
 
 build cmake_object_order_depends_target_demo: phony || .
 
-build CMakeFiles/demo.dir/Application.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/Application.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/Application.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/Application.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/Application.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir
 
-build CMakeFiles/demo.dir/imgui/imgui_demo.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_demo.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui_demo.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_demo.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_demo.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/imgui/imgui_draw.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_draw.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui_draw.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_draw.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_draw.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/imgui/imgui_tables.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_tables.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui_tables.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_tables.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_tables.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/imgui/imgui_widgets.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui_widgets.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_widgets.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/imgui/imgui.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/classes/Bit.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Bit.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Bit.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Bit.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Bit.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/BitHolder.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/BitHolder.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/BitHolder.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/BitHolder.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/BitHolder.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Game.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Game.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Game.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Game.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Game.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Sprite.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Sprite.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Sprite.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Sprite.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Sprite.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Square.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Square.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Square.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Square.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Square.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/ChessSquare.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/ChessSquare.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/ChessSquare.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/ChessSquare.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/ChessSquare.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Grid.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Grid.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Grid.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Grid.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Grid.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Chess.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
-  DEP_FILE = CMakeFiles/demo.dir/classes/Chess.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
-  INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
-  OBJECT_DIR = CMakeFiles/demo.dir
-  OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
-
-build CMakeFiles/demo.dir/classes/TicTacToe.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/TicTacToe.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/TicTacToe.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/TicTacToe.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/TicTacToe.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Checkers.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Checkers.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Checkers.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Checkers.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Checkers.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Othello.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Othello.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Othello.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Othello.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Othello.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/classes/Connect4.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/classes/Connect4.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Connect4.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Connect4.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/classes/Connect4.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
 
-build CMakeFiles/demo.dir/imgui/imgui_impl_opengl3.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/classes/Chess.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/classes/Chess.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
+  DEP_FILE = CMakeFiles/demo.dir/classes/Chess.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
+  INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
+  OBJECT_DIR = CMakeFiles/demo.dir
+  OBJECT_FILE_DIR = CMakeFiles/demo.dir/classes
+
+build CMakeFiles/demo.dir/imgui/imgui_impl_opengl3.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_impl_opengl3.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
 
-build CMakeFiles/demo.dir/main_macos.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/main_macos.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/main_macos.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/main_macos.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/main_macos.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir
 
-build CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o: CXX_COMPILER__demo_unscanned_Debug /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_impl_glfw.cpp || cmake_object_order_depends_target_demo
-  CONFIG = Debug
+build CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o: CXX_COMPILER__demo_unscanned_Release /Users/michaelxi/Projects/CMPM123/Chess/imgui/imgui_impl_glfw.cpp || cmake_object_order_depends_target_demo
+  CONFIG = Release
   DEP_FILE = CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64
+  FLAGS = -O3 -DNDEBUG -std=gnu++20 -arch arm64
   INCLUDES = -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/demo.dir
   OBJECT_FILE_DIR = CMakeFiles/demo.dir/imgui
@@ -393,9 +393,9 @@ build CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o: CXX_COMPILER__demo_unscan
 #############################################
 # Link the executable demo
 
-build demo: CXX_EXECUTABLE_LINKER__demo_Debug CMakeFiles/demo.dir/Application.cpp.o CMakeFiles/demo.dir/imgui/imgui_demo.cpp.o CMakeFiles/demo.dir/imgui/imgui_draw.cpp.o CMakeFiles/demo.dir/imgui/imgui_tables.cpp.o CMakeFiles/demo.dir/imgui/imgui_widgets.cpp.o CMakeFiles/demo.dir/imgui/imgui.cpp.o CMakeFiles/demo.dir/classes/Bit.cpp.o CMakeFiles/demo.dir/classes/BitHolder.cpp.o CMakeFiles/demo.dir/classes/Game.cpp.o CMakeFiles/demo.dir/classes/Sprite.cpp.o CMakeFiles/demo.dir/classes/Square.cpp.o CMakeFiles/demo.dir/classes/ChessSquare.cpp.o CMakeFiles/demo.dir/classes/Grid.cpp.o CMakeFiles/demo.dir/classes/Chess.cpp.o CMakeFiles/demo.dir/classes/TicTacToe.cpp.o CMakeFiles/demo.dir/classes/Checkers.cpp.o CMakeFiles/demo.dir/classes/Othello.cpp.o CMakeFiles/demo.dir/classes/Connect4.cpp.o CMakeFiles/demo.dir/imgui/imgui_impl_opengl3.cpp.o CMakeFiles/demo.dir/main_macos.cpp.o CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o | /opt/homebrew/lib/libglfw.3.4.dylib
-  CONFIG = Debug
-  FLAGS = -g -arch arm64
+build demo: CXX_EXECUTABLE_LINKER__demo_Release CMakeFiles/demo.dir/Application.cpp.o CMakeFiles/demo.dir/imgui/imgui_demo.cpp.o CMakeFiles/demo.dir/imgui/imgui_draw.cpp.o CMakeFiles/demo.dir/imgui/imgui_tables.cpp.o CMakeFiles/demo.dir/imgui/imgui_widgets.cpp.o CMakeFiles/demo.dir/imgui/imgui.cpp.o CMakeFiles/demo.dir/classes/Bit.cpp.o CMakeFiles/demo.dir/classes/BitHolder.cpp.o CMakeFiles/demo.dir/classes/Game.cpp.o CMakeFiles/demo.dir/classes/Sprite.cpp.o CMakeFiles/demo.dir/classes/Square.cpp.o CMakeFiles/demo.dir/classes/ChessSquare.cpp.o CMakeFiles/demo.dir/classes/Grid.cpp.o CMakeFiles/demo.dir/classes/TicTacToe.cpp.o CMakeFiles/demo.dir/classes/Checkers.cpp.o CMakeFiles/demo.dir/classes/Othello.cpp.o CMakeFiles/demo.dir/classes/Connect4.cpp.o CMakeFiles/demo.dir/classes/Chess.cpp.o CMakeFiles/demo.dir/imgui/imgui_impl_opengl3.cpp.o CMakeFiles/demo.dir/main_macos.cpp.o CMakeFiles/demo.dir/imgui/imgui_impl_glfw.cpp.o | /opt/homebrew/lib/libglfw.3.4.dylib
+  CONFIG = Release
+  FLAGS = -O3 -DNDEBUG -arch arm64
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  -framework OpenGL  /opt/homebrew/lib/libglfw.3.4.dylib
   OBJECT_DIR = CMakeFiles/demo.dir
   POST_BUILD = cd /Users/michaelxi/Projects/CMPM123/Chess/build && /opt/homebrew/bin/cmake -E copy_directory /Users/michaelxi/Projects/CMPM123/Chess/resources /Users/michaelxi/Projects/CMPM123/Chess/build/resources

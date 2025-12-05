@@ -2,6 +2,8 @@
 #include "MagicBitboards.h"
 #include <vector>
 #include <algorithm>  // for std::max
+#include <sstream>    // for FEN parsing
+#include <iostream>   // for std::cout
 
 
 Chess::Chess()
@@ -35,6 +37,12 @@ Chess::Chess()
     // Initialize AI
     _aiMovedThisTurn = false;
     _lastAIPlayer = -1;
+    
+    // Initialize current player
+    _currentPlayer = 0;  // White
+    
+    // Initialize last AI move
+    _lastAIMove = BitMove();
 }
 
 Chess::~Chess()
@@ -126,32 +134,6 @@ void Chess::FENtoBoard(const std::string& fen)
         curIndex++;
         curBoardIndex++;
     }
-}
-
-void Chess::loadPositionFromFEN(const std::string& fen, int currentPlayer)
-{
-    _grid->forEachSquare([&](ChessSquare* square, int /*x*/, int /*y*/) {
-        square->destroyBit();
-        square->setBit(nullptr);
-    });
-
-    initializeBitboards();
-    _enPassantSquare = -1;
-    _pendingPromotionSquare = -1;
-    _pendingPromotionPlayer = -1;
-    _whiteKingMoved = false;
-    _whiteKingsideRookMoved = false;
-    _whiteQueensideRookMoved = false;
-    _blackKingMoved = false;
-    _blackKingsideRookMoved = false;
-    _blackQueensideRookMoved = false;
-    _aiMovedThisTurn = false;
-    _lastAIPlayer = -1;
-
-    FENtoBoard(fen);
-    updateBitboards();
-    _gameOptions.currentTurnNo = currentPlayer;
-    initializePawnMoves(currentPlayer);
 }
 
 /**
@@ -351,6 +333,10 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
     }
     
     endTurn();
+    
+    // Update _currentPlayer to match the game state after turn ends
+    _currentPlayer = getCurrentPlayer()->playerNumber();
+    
     initializePawnMoves(getCurrentPlayer()->playerNumber());
 }
 
@@ -761,6 +747,8 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
 
 void Chess::updateAI()
 {
+    _lastAIMove = BitMove();  // Reset last AI move
+    
     int currentPlayer = getCurrentPlayer()->playerNumber();
     // Generate all legal moves
     std::vector<BitMove> legalMoves = generateAllLegalMoves(currentPlayer);
@@ -774,7 +762,7 @@ void Chess::updateAI()
     int bestScore = -999999;
     int alpha = -999999;
     int beta = 999999;
-    int depth = 5;
+    int depth = 6;
     
     // Iterate through all legal moves
     for (const BitMove& move : legalMoves) {
@@ -795,6 +783,11 @@ void Chess::updateAI()
         if (alpha >= beta) {
             break;
         }
+    }
+    
+    // Make the best move
+    if (bestScore != -999999) {
+        _lastAIMove = bestMove;
     }
     
     // Execute the best move on the visual board
@@ -1096,6 +1089,10 @@ void Chess::completePromotion(ChessPiece promotionPiece)
     
     // Continue game
     endTurn();
+    
+    // Update _currentPlayer to match the game state after turn ends
+    _currentPlayer = getCurrentPlayer()->playerNumber();
+    
     initializePawnMoves(getCurrentPlayer()->playerNumber());
 }
 
@@ -1440,4 +1437,189 @@ void Chess::setStateString(const std::string &s)
             square->setBit(nullptr);
         }
     });
+}
+
+// ============================================================================
+// TOURNAMENT SUPPORT
+// ============================================================================
+
+// Tournament support: Set board from FEN and reinitialize game state for AI
+void Chess::setBoardFromFEN(const std::string& fen) {
+    // Parse FEN string - can be full FEN or just piece placement
+    std::string piecePlacement = fen;
+    std::string activeColor = "w";
+    std::string castling = "KQkq";
+    std::string enPassant = "-";
+    std::string halfmove = "0";
+    std::string fullmove = "1";
+
+    // Check if this is a full FEN string (has spaces)
+    size_t spacePos = fen.find(' ');
+    if (spacePos != std::string::npos) {
+        // Parse full FEN
+        std::istringstream fenStream(fen);
+        fenStream >> piecePlacement >> activeColor >> castling >> enPassant;
+        // Halfmove and fullmove are optional
+        if (fenStream >> halfmove >> fullmove) {
+            // Successfully read halfmove and fullmove
+        }
+    }
+
+    // Clear ALL game state first
+    _grid->forEachSquare([](ChessSquare* square, int /*x*/, int /*y*/) {
+        square->destroyBit();
+        square->setBit(nullptr);
+    });
+
+    // Reset all bitboards
+    initializeBitboards();
+    
+    // Reset special move states
+    _enPassantSquare = -1;
+    _pendingPromotionSquare = -1;
+    _pendingPromotionPlayer = -1;
+    
+    // Reset castling rights (will be set from FEN below)
+    _whiteKingMoved = true;  // Assume moved unless FEN says otherwise
+    _whiteKingsideRookMoved = true;
+    _whiteQueensideRookMoved = true;
+    _blackKingMoved = true;
+    _blackKingsideRookMoved = true;
+    _blackQueensideRookMoved = true;
+    
+    // Reset AI state
+    _aiMovedThisTurn = false;
+    _lastAIPlayer = -1;
+    _lastAIMove = BitMove();
+    
+    // Reset Game base class state
+    _lastMove = "";
+    _winner = nullptr;
+
+    // Set visual board from piece placement
+    FENtoBoard(piecePlacement);
+
+    // Determine current player from FEN
+    _currentPlayer = (activeColor == "w" || activeColor == "W") ? 0 : 1;
+    
+    // Update the game's current turn to match
+    _gameOptions.currentTurnNo = _currentPlayer;
+
+    // Rebuild bitboards from the visual board
+    updateBitboards();
+    
+    // Parse castling rights from FEN
+    if (castling != "-") {
+        for (char c : castling) {
+            switch (c) {
+                case 'K': _whiteKingsideRookMoved = false; _whiteKingMoved = false; break;
+                case 'Q': _whiteQueensideRookMoved = false; _whiteKingMoved = false; break;
+                case 'k': _blackKingsideRookMoved = false; _blackKingMoved = false; break;
+                case 'q': _blackQueensideRookMoved = false; _blackKingMoved = false; break;
+            }
+        }
+    }
+    
+    // Parse en passant square from FEN
+    if (enPassant != "-" && enPassant.length() >= 2) {
+        int file = enPassant[0] - 'a';  // a=0, b=1, ..., h=7
+        int rank = enPassant[1] - '1';  // 1=0, 2=1, ..., 8=7
+        if (file >= 0 && file < 8 && rank >= 0 && rank < 8) {
+            _enPassantSquare = rank * 8 + file;
+        }
+    }
+    
+    // Reinitialize pawn moves for the current player
+    initializePawnMoves(_currentPlayer);
+
+    // Generate legal moves for the new position
+    std::vector<BitMove> moves = generateAllLegalMoves(_currentPlayer);
+
+    std::cout << "[Tournament] Board set from FEN. Player: "
+              << (_currentPlayer == 0 ? "White" : "Black")
+              << ", Legal moves: " << moves.size() 
+              << ", Castling: " << castling
+              << ", En passant: " << enPassant << std::endl;
+}
+
+// Tournament support: Generate FEN string from current board
+std::string Chess::getFEN() const {
+    std::string fen;
+    fen.reserve(90);
+
+    // Piece placement (from rank 8 to rank 1)
+    for (int rank = 7; rank >= 0; --rank) {
+        int emptyCount = 0;
+        for (int file = 0; file < 8; ++file) {
+            char piece = pieceNotation(file, rank);
+            if (piece == '0') {
+                emptyCount++;
+            } else {
+                if (emptyCount > 0) {
+                    fen += std::to_string(emptyCount);
+                    emptyCount = 0;
+                }
+                fen += piece;
+            }
+        }
+        if (emptyCount > 0) {
+            fen += std::to_string(emptyCount);
+        }
+        if (rank > 0) {
+            fen += '/';
+        }
+    }
+
+    // Active color
+    fen += ' ';
+    fen += (_currentPlayer == 0) ? 'w' : 'b';
+
+    // Castling availability (based on actual game state)
+    fen += ' ';
+    std::string castling;
+
+    // White castling rights (check if king and rooks haven't moved)
+    if (!_whiteKingMoved) {
+        if (!_whiteKingsideRookMoved) {
+            char h1 = pieceNotation(7, 0);
+            if (h1 == 'R') castling += 'K';
+        }
+        if (!_whiteQueensideRookMoved) {
+            char a1 = pieceNotation(0, 0);
+            if (a1 == 'R') castling += 'Q';
+        }
+    }
+
+    // Black castling rights (check if king and rooks haven't moved)
+    if (!_blackKingMoved) {
+        if (!_blackKingsideRookMoved) {
+            char h8 = pieceNotation(7, 7);
+            if (h8 == 'r') castling += 'k';
+        }
+        if (!_blackQueensideRookMoved) {
+            char a8 = pieceNotation(0, 7);
+            if (a8 == 'r') castling += 'q';
+        }
+    }
+
+    fen += castling.empty() ? "-" : castling;
+
+    // En passant target square
+    fen += ' ';
+    if (_enPassantSquare != -1) {
+        int file = _enPassantSquare % 8;
+        int rank = _enPassantSquare / 8;
+        fen += char('a' + file);
+        fen += char('1' + rank);
+    } else {
+        fen += '-';
+    }
+
+    // Halfmove clock (simplified)
+    fen += " 0";
+
+    // Fullmove number (simplified)
+    fen += " 1";
+
+    return fen;
 }

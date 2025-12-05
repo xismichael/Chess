@@ -37,12 +37,10 @@ public:
     std::string initialStateString() override;
     std::string stateString() override;
     void setStateString(const std::string &s) override;
-    void loadPositionFromFEN(const std::string& fen, int currentPlayer = 0);
     
     Grid* getGrid() override { return _grid; }
     
     // ========== AI INTERFACE ==========
-    bool gameHasAI() override { return true; }
     void updateAI() override;
     std::vector<BitMove> generateAllLegalMoves(int playerNumber);
     
@@ -53,6 +51,18 @@ public:
     // ========== PROMOTION INTERFACE ==========
     bool isPromotionPending() const { return _pendingPromotionSquare != -1; }
     void completePromotion(ChessPiece promotionPiece);
+
+    // ========== TOURNAMENT SUPPORT ==========
+    // Tournament support methods
+    void setBoardFromFEN(const std::string& fen);
+    BitMove getLastAIMove() const { return _lastAIMove; }
+    std::string getFEN() const;
+
+    // Get current player color (WHITE=1, BLACK=-1)
+    int getCurrentPlayerColor() const { return _currentPlayer; }
+
+    // you can make this variable private, it's just grouped with the public methods for convenience
+    BitMove _lastAIMove;  // Stores the last move calculated by AI (for tournament)
 
 private:
     // ========== PIECE CREATION ==========
@@ -130,6 +140,9 @@ private:
     
     // ========== MEMBER VARIABLES ==========
     Grid* _grid;
+    
+    // Current player (for FEN support)
+    int _currentPlayer;
     
     // White piece bitboards
     uint64_t _whitePawns;

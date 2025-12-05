@@ -7,12 +7,6 @@
 // Simple helper function to load an image into a OpenGL texture with common settings
 bool Sprite::LoadTextureFromFile(const char* filename)
 {
-#ifdef CHESS_HEADLESS_TESTS
-    _size = ImVec2(0, 0);
-    _texture = (ImTextureID)0;
-    (void)filename;
-    return true;
-#else
     // Load from file
     int image_width = 0;
     int image_height = 0;
@@ -32,7 +26,6 @@ bool Sprite::LoadTextureFromFile(const char* filename)
     }
     _size = ImVec2((float)image_width, (float)image_height);
     return true;
-#endif
 }
 
 void Sprite::setHighlighted(bool highlighted)
@@ -47,7 +40,7 @@ bool Sprite::highlighted()
 	return _highlighted;
 }
 
-#if defined(__APPLE__) && !defined(CHESS_HEADLESS_TESTS)
+#ifdef __APPLE__
 #include "../imgui/imgui_impl_opengl3_loader.h"
 
 ImTextureID Sprite::_loadTextureFromMemory(const unsigned char *image_data, int image_width, int image_height)
@@ -67,7 +60,7 @@ ImTextureID Sprite::_loadTextureFromMemory(const unsigned char *image_data, int 
     return static_cast<ImTextureID>(image_texture);
 }
 
-#elif !defined(CHESS_HEADLESS_TESTS)
+#else
 
 // DirectX
 #include <stdio.h>
