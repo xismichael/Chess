@@ -1,8 +1,7 @@
 #include "Chess.h"
 #include "MagicBitboards.h"
 #include <vector>
-#include <algorithm>  // for std::max
-
+#include <algorithm>
 
 Chess::Chess()
 {
@@ -43,7 +42,6 @@ Chess::~Chess()
     delete _grid;
 }
 
-
 void Chess::setUpBoard()
 {
     setNumberOfPlayers(2);
@@ -57,11 +55,6 @@ void Chess::setUpBoard()
     startGame();
 }
 
-/**
- * Parse FEN (Forsyth-Edwards Notation) string and place pieces on board
- * Format: piece placement from rank 8 to rank 1, '/' separates ranks
- * Uppercase = white pieces, lowercase = black pieces
- */
 void Chess::FENtoBoard(const std::string& fen)
 {
     int curIndex = 0;
@@ -83,18 +76,15 @@ void Chess::FENtoBoard(const std::string& fen)
             curIndex++;
             continue;
         }
-        // Determine piece type and player
         int playerNumber;
         ChessPiece piece;
         
-        // Black pieces (lowercase)
         if (c >= 'a' && c <= 'z') {
-                playerNumber = 1;
+            playerNumber = 1;
             c = toupper(c);
         }
-        // White pieces (uppercase)
         else if (c >= 'A' && c <= 'Z') {
-                playerNumber = 0;
+            playerNumber = 0;
         }
         else {
             curIndex++;
@@ -154,9 +144,6 @@ void Chess::loadPositionFromFEN(const std::string& fen, int currentPlayer)
     initializePawnMoves(currentPlayer);
 }
 
-/**
- * Create a visual piece for a player
- */
 Bit* Chess::PieceForPlayer(const int playerNumber, ChessPiece piece)
 {
     const char* pieces[] = {
@@ -174,14 +161,12 @@ Bit* Chess::PieceForPlayer(const int playerNumber, ChessPiece piece)
     return bit;
 }
 
-
 bool Chess::canBitMoveFrom(Bit &bit, BitHolder &src)
 {
     int currentPlayerMask = getCurrentPlayer()->playerNumber() * 128;
     int pieceMask = bit.gameTag() & 128;
     return (pieceMask == currentPlayerMask);
 }
-
 
 bool Chess::canBitMoveFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
 {
@@ -255,15 +240,6 @@ bool Chess::actionForEmptyHolder(BitHolder &holder)
     return false;
 }
 
-// ============================================================================
-// MOVE EXECUTION
-// ============================================================================
-
-/**
- * Execute a move from src to dst
- * Handles: captures, en passant, castling, promotion
- * Updates: bitboards, castling rights, en passant state
- */
 void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
 {
     ChessSquare* srcSquare = dynamic_cast<ChessSquare*>(&src);
@@ -271,35 +247,31 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
     
     if (!srcSquare || !dstSquare) return;
     
-        int fromSquare = srcSquare->getSquareIndex();
-        int toSquare = dstSquare->getSquareIndex();
-        int gameTag = bit.gameTag();
-        int pieceType = gameTag % 128;
-        int playerNumber = (gameTag & 128) ? 1 : 0;
-        
-
+    int fromSquare = srcSquare->getSquareIndex();
+    int toSquare = dstSquare->getSquareIndex();
+    int gameTag = bit.gameTag();
+    int pieceType = gameTag % 128;
+    int playerNumber = (gameTag & 128) ? 1 : 0;
+    
     Bit* capturedPiece = dstSquare->bit();
     if (capturedPiece) {
         int capturedTag = capturedPiece->gameTag();
-            int capturedType = capturedTag % 128;
-            int capturedPlayer = (capturedTag & 128) ? 1 : 0;
+        int capturedType = capturedTag % 128;
+        int capturedPlayer = (capturedTag & 128) ? 1 : 0;
         
-        // Check if captured piece is a rook on starting square (forfeit opponent's castling)
         handleRookCapture(toSquare, capturedType);
         
-        // Remove captured piece from bitboards (unless it's en passant - handled separately)
         if (!(pieceType == Pawn && toSquare == _enPassantSquare && _enPassantSquare != -1)) {
             removePieceFromBitboard(toSquare, static_cast<ChessPiece>(capturedType), capturedPlayer);
         }
     }
     
     // Move piece visually
-    bit.setParent(dstSquare); 
+    bit.setParent(dstSquare);
     srcSquare->setBit(nullptr);
     dstSquare->setBit(&bit);
     bit.moveTo(dstSquare->getPosition());
     
-
     if (pieceType == Pawn && toSquare == _enPassantSquare && _enPassantSquare != -1) {
         int capturedPawnSquare = (playerNumber == 0) ? toSquare - 8 : toSquare + 8;
         removePieceFromBitboard(capturedPawnSquare, Pawn, 1 - playerNumber);
@@ -308,11 +280,8 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
         int capturedY = capturedPawnSquare / 8;
         _grid->getSquare(capturedX, capturedY)->destroyBit();
     }
-        
-    // Move piece on bitboards
-        movePieceOnBitboard(fromSquare, toSquare, static_cast<ChessPiece>(pieceType), playerNumber);
     
-    // Resync bitboards with grid to prevent desynchronization bugs
+    movePieceOnBitboard(fromSquare, toSquare, static_cast<ChessPiece>(pieceType), playerNumber);
     updateBitboards();
     
     // Handle pawn promotion
@@ -321,16 +290,13 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
         int promotionRank = (playerNumber == 0) ? 7 : 0;
         
         if (toRank == promotionRank) {
-            // Check if current player is AI
             Player* currentPlayer = getPlayerAt(playerNumber);
             if (currentPlayer && currentPlayer->isAIPlayer()) {
-                // AI auto promotes to Queen
                 handlePromotion(toSquare, Queen, playerNumber);
             } else {
-                // Human player pause for UI selection
                 _pendingPromotionSquare = toSquare;
                 _pendingPromotionPlayer = playerNumber;
-                return;  // Pause game and wait for UI selection
+                return;
             }
         }
     }
@@ -354,10 +320,6 @@ void Chess::bitMovedFromTo(Bit &bit, BitHolder &src, BitHolder &dst)
     initializePawnMoves(getCurrentPlayer()->playerNumber());
 }
 
-// ============================================================================
-// BITBOARD MANAGEMENT
-// ============================================================================
-
 void Chess::initializeBitboards()
 {
     _whitePawns = 0ULL;
@@ -375,10 +337,6 @@ void Chess::initializeBitboards()
     _blackKings = 0ULL;
 }
 
-/**
- * Scan the visual grid and rebuild all bitboards
- * This prevents desynchronization between visual state and bitboard state
- */
 void Chess::updateBitboards()
 {
     initializeBitboards();
@@ -457,10 +415,6 @@ void Chess::movePieceOnBitboard(int fromSquare, int toSquare, ChessPiece piece, 
     addPieceToBitboard(toSquare, piece, playerNumber);
 }
 
-// ============================================================================
-// BITBOARD QUERIES
-// ============================================================================
-
 uint64_t Chess::getOccupiedSquares() const
 {
     return getPlayerPieces(0) | getPlayerPieces(1);
@@ -506,10 +460,6 @@ BitboardElement Chess::getPieceBitboard(ChessPiece piece, int playerNumber) cons
         }
     }
 }
-
-// ============================================================================
-// PAWN MOVE GENERATION (Player Validation Cache)
-// ============================================================================
 
 void Chess::initializePawnMoves(int playerNumber)
 {
@@ -591,11 +541,6 @@ void Chess::initializePawnMoves(int playerNumber)
     });
 }
 
-// ============================================================================
-// AI MOVE GENERATION 
-// ============================================================================
-
-
 std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
 {
     std::vector<BitMove> moves;
@@ -606,7 +551,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
     uint64_t enemies = getPlayerPieces(1 - playerNumber);
     uint64_t validTargets = empty | enemies;
     
-    // === PAWN MOVES (bulk operations) ===
+    //PAWN MOVES
     uint64_t pawns = getPieceBitboard(Pawn, playerNumber).getData();
     int direction = (playerNumber == 0) ? 1 : -1;
     int promotionRank = (playerNumber == 0) ? 7 : 0;
@@ -697,7 +642,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         }
     }
     
-    // === KNIGHT MOVES ===
+    //KNIGHT MOVES
     getPieceBitboard(Knight, playerNumber).forEachBit([&](int fromSquare) {
         uint64_t targets = KnightAttacks[fromSquare] & validTargets;
         BitboardElement(targets).forEachBit([&](int toSquare) {
@@ -705,7 +650,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         });
     });
     
-    // === KING MOVES ===
+    //KING MOVES
     getPieceBitboard(King, playerNumber).forEachBit([&](int fromSquare) {
         uint64_t targets = KingAttacks[fromSquare] & validTargets;
         BitboardElement(targets).forEachBit([&](int toSquare) {
@@ -713,7 +658,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         });
     });
     
-    // === CASTLING (inline for optimization) ===
+    //CASTLING
     if (playerNumber == 0) {
         if (canCastleKingside(playerNumber)) {
             moves.emplace_back(4, 6, King);
@@ -730,7 +675,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         }
     }
     
-    // === ROOK MOVES (Magic Bitboards) ===
+    //ROOK MOVES
     getPieceBitboard(Rook, playerNumber).forEachBit([&](int fromSquare) {
         uint64_t targets = getRookAttacks(fromSquare, occupied) & validTargets;
         BitboardElement(targets).forEachBit([&](int toSquare) {
@@ -738,7 +683,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         });
     });
     
-    // === BISHOP MOVES (Magic Bitboards) ===
+    //BISHOP MOVES
     getPieceBitboard(Bishop, playerNumber).forEachBit([&](int fromSquare) {
         uint64_t targets = getBishopAttacks(fromSquare, occupied) & validTargets;
         BitboardElement(targets).forEachBit([&](int toSquare) {
@@ -746,7 +691,7 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
         });
     });
     
-    // === QUEEN MOVES (Magic Bitboards) ===
+    //QUEEN MOVES
     getPieceBitboard(Queen, playerNumber).forEachBit([&](int fromSquare) {
         uint64_t targets = getQueenAttacks(fromSquare, occupied) & validTargets;
         BitboardElement(targets).forEachBit([&](int toSquare) {
@@ -762,42 +707,34 @@ std::vector<BitMove> Chess::generateAllLegalMoves(int playerNumber)
 void Chess::updateAI()
 {
     int currentPlayer = getCurrentPlayer()->playerNumber();
-    // Generate all legal moves
     std::vector<BitMove> legalMoves = generateAllLegalMoves(currentPlayer);
     
     if (legalMoves.empty()) {
         return;
     }
     
-    // Search for best move using negamax
     BitMove bestMove = legalMoves[0];
     int bestScore = -999999;
     int alpha = -999999;
     int beta = 999999;
-    int depth = 5;
+    int depth = 7;
     
-    // Iterate through all legal moves
     for (const BitMove& move : legalMoves) {
-        // Make the move
         CapturedPieceInfo captured = makeMoveBitboard(move, currentPlayer);
-        int score = -negamax(depth - 1, -beta, -alpha, 1 - currentPlayer); 
-        // Unmake the move
+        int score = -negamax(depth - 1, -beta, -alpha, 1 - currentPlayer);
         unmakeMoveBitboard(move, currentPlayer, captured);
         
-        // Update best move
         if (score > bestScore) {
             bestScore = score;
             bestMove = move;
         }
         
-        // Alpha-beta pruning
         alpha = std::max(alpha, score);
         if (alpha >= beta) {
             break;
         }
     }
     
-    // Execute the best move on the visual board
     int fromX = bestMove.from % 8;
     int fromY = bestMove.from / 8;
     int toX = bestMove.to % 8;
@@ -813,25 +750,18 @@ void Chess::updateAI()
     }
 }
 
-
-
 int Chess::negamax(int depth, int alpha, int beta, int playerNumber)
 {
-    // Base case: reached depth limit or game over
     if (depth == 0) {
         return evaluatePosition(playerNumber);
     }
     
-    // Generate all legal moves
     std::vector<BitMove> legalMoves = generateAllLegalMoves(playerNumber);
     
-
     if (legalMoves.empty()) {
         if (isKingInCheck(playerNumber)) {
-            // Checkmate
             return -999999;
         } else {
-            // Stalemate
             return 0;
         }
     }
@@ -854,16 +784,12 @@ int Chess::negamax(int depth, int alpha, int beta, int playerNumber)
 
 int Chess::evaluatePosition(int playerNumber)
 {
-    int score = 0;
-    
-    // Piece values
     const int PAWN_VALUE = 100;
     const int KNIGHT_VALUE = 320;
     const int BISHOP_VALUE = 330;
     const int ROOK_VALUE = 500;
     const int QUEEN_VALUE = 900;
     
-    // Material count for white
     int whiteMaterial = 0;
     whiteMaterial += countOnes(_whitePawns) * PAWN_VALUE;
     whiteMaterial += countOnes(_whiteKnights) * KNIGHT_VALUE;
@@ -871,7 +797,6 @@ int Chess::evaluatePosition(int playerNumber)
     whiteMaterial += countOnes(_whiteRooks) * ROOK_VALUE;
     whiteMaterial += countOnes(_whiteQueens) * QUEEN_VALUE;
     
-    // Material count for black
     int blackMaterial = 0;
     blackMaterial += countOnes(_blackPawns) * PAWN_VALUE;
     blackMaterial += countOnes(_blackKnights) * KNIGHT_VALUE;
@@ -879,11 +804,9 @@ int Chess::evaluatePosition(int playerNumber)
     blackMaterial += countOnes(_blackRooks) * ROOK_VALUE;
     blackMaterial += countOnes(_blackQueens) * QUEEN_VALUE;
     
-    // Calculate material advantage
-    score = (playerNumber == 0) ? (whiteMaterial - blackMaterial) : (blackMaterial - whiteMaterial);
+    int score = (playerNumber == 0) ? (whiteMaterial - blackMaterial) : (blackMaterial - whiteMaterial);
     
-    // Positional bonuses
-    // Center control bonus
+    //value center control more
     const uint64_t CENTER = 0x0000001818000000ULL;
     const uint64_t EXTENDED_CENTER = 0x00003C3C3C3C0000ULL;
     
@@ -895,7 +818,8 @@ int Chess::evaluatePosition(int playerNumber)
     
     score += (playerNumber == 0) ? (whiteCenter - blackCenter) : (blackCenter - whiteCenter);
     
-    // Pawn advancement bonus
+
+    //value pawn advancement more
     uint64_t whitePawns = _whitePawns;
     while (whitePawns) {
         int square = getFirstBit(whitePawns);
@@ -914,41 +838,33 @@ int Chess::evaluatePosition(int playerNumber)
         blackPawns &= blackPawns - 1;
     }
     
-    
     return score;
 }
-
-// ============================================================================
-// CASTLING HELPERS
-// ============================================================================
 
 bool Chess::canCastleKingside(int playerNumber) const
 {
     if (playerNumber == 0) {
         if (_whiteKingMoved || _whiteKingsideRookMoved) return false;
         
-        // Check squares are empty
         uint64_t occupied = getOccupiedSquares();
         if ((occupied & 0x0000000000000060ULL) != 0) return false;
         
         int enemy = 1;
-        if (isSquareAttacked(4, enemy)) return false;  // e1 not in check
-        if (isSquareAttacked(5, enemy)) return false;  // f1 not attacked
-        if (isSquareAttacked(6, enemy)) return false;  // g1 not attacked
+        if (isSquareAttacked(4, enemy)) return false;
+        if (isSquareAttacked(5, enemy)) return false;
+        if (isSquareAttacked(6, enemy)) return false;
         
         return true;
     } else {
         if (_blackKingMoved || _blackKingsideRookMoved) return false;
         
-        // Check squares are empty
         uint64_t occupied = getOccupiedSquares();
-        if ((occupied & 0x6000000000000000ULL) != 0) return false;  // f8, g8 empty
+        if ((occupied & 0x6000000000000000ULL) != 0) return false;
         
-        // Check king not in/through/into check
         int enemy = 0;
-        if (isSquareAttacked(60, enemy)) return false;  // e8 not in check
-        if (isSquareAttacked(61, enemy)) return false;  // f8 not attacked
-        if (isSquareAttacked(62, enemy)) return false;  // g8 not attacked
+        if (isSquareAttacked(60, enemy)) return false;
+        if (isSquareAttacked(61, enemy)) return false;
+        if (isSquareAttacked(62, enemy)) return false;
         
         return true;
     }
@@ -959,29 +875,25 @@ bool Chess::canCastleQueenside(int playerNumber) const
     if (playerNumber == 0) {
         if (_whiteKingMoved || _whiteQueensideRookMoved) return false;
         
-        // Check squares are empty
         uint64_t occupied = getOccupiedSquares();
-        if ((occupied & 0x000000000000000EULL) != 0) return false;  // b1, c1, d1 empty
+        if ((occupied & 0x000000000000000EULL) != 0) return false;
         
-        // Check king not in/through/into check
         int enemy = 1;
-        if (isSquareAttacked(4, enemy)) return false;  // e1 not in check
-        if (isSquareAttacked(3, enemy)) return false;  // d1 not attacked
-        if (isSquareAttacked(2, enemy)) return false;  // c1 not attacked
+        if (isSquareAttacked(4, enemy)) return false;
+        if (isSquareAttacked(3, enemy)) return false;
+        if (isSquareAttacked(2, enemy)) return false;
         
         return true;
     } else {
         if (_blackKingMoved || _blackQueensideRookMoved) return false;
         
-        // Check squares are empty
         uint64_t occupied = getOccupiedSquares();
-        if ((occupied & 0x0E00000000000000ULL) != 0) return false;  // b8, c8, d8 empty
+        if ((occupied & 0x0E00000000000000ULL) != 0) return false;
         
-        // Check king not in/through/into check
         int enemy = 0;
-        if (isSquareAttacked(60, enemy)) return false;  // e8 not in check
-        if (isSquareAttacked(59, enemy)) return false;  // d8 not attacked
-        if (isSquareAttacked(58, enemy)) return false;  // c8 not attacked
+        if (isSquareAttacked(60, enemy)) return false;
+        if (isSquareAttacked(59, enemy)) return false;
+        if (isSquareAttacked(58, enemy)) return false;
         
         return true;
     }
@@ -989,23 +901,18 @@ bool Chess::canCastleQueenside(int playerNumber) const
 
 void Chess::performCastling(int kingToSquare, int kingFromSquare, int playerNumber)
 {
-    // Determine rook squares based on castling direction
     int rookFromSquare, rookToSquare;
     
     if (kingToSquare > kingFromSquare) {
-        // Kingside: rook moves from h-file to f-file
         rookFromSquare = (playerNumber == 0) ? 7 : 63;
         rookToSquare = (playerNumber == 0) ? 5 : 61;
     } else {
-        // Queenside: rook moves from a-file to d-file
         rookFromSquare = (playerNumber == 0) ? 0 : 56;
         rookToSquare = (playerNumber == 0) ? 3 : 59;
     }
     
-    // Move rook on bitboards
     movePieceOnBitboard(rookFromSquare, rookToSquare, Rook, playerNumber);
     
-    // Move rook visually on grid
     int rookFromX = rookFromSquare % 8;
     int rookFromY = rookFromSquare / 8;
     int rookToX = rookToSquare % 8;
@@ -1016,7 +923,6 @@ void Chess::performCastling(int kingToSquare, int kingFromSquare, int playerNumb
         ChessSquare* rookFromHolder = _grid->getSquare(rookFromX, rookFromY);
         ChessSquare* rookToHolder = _grid->getSquare(rookToX, rookToY);
         
-        // Set parent before clearing to prevent deletion
         rook->setParent(rookToHolder);
         rookFromHolder->draggedBitTo(rook, rookToHolder);
         rookToHolder->setBit(rook);
@@ -1037,8 +943,8 @@ void Chess::updateCastlingRights(int pieceType, int fromSquare, int playerNumber
             if (fromSquare == 0) _whiteQueensideRookMoved = true;  // a1
             if (fromSquare == 7) _whiteKingsideRookMoved = true;   // h1
         } else {
-            if (fromSquare == 56) _blackQueensideRookMoved = true; // a8
-            if (fromSquare == 63) _blackKingsideRookMoved = true;  // h8
+            if (fromSquare == 56) _blackQueensideRookMoved = true;
+            if (fromSquare == 63) _blackKingsideRookMoved = true;
         }
     }
 }
@@ -1046,7 +952,6 @@ void Chess::updateCastlingRights(int pieceType, int fromSquare, int playerNumber
 void Chess::handleRookCapture(int toSquare, int capturedType)
 {
     if (capturedType == Rook) {
-        // Forfeit castling if rook on starting square is captured
         if (toSquare == 0) _whiteQueensideRookMoved = true;
         if (toSquare == 7) _whiteKingsideRookMoved = true;
         if (toSquare == 56) _blackQueensideRookMoved = true;
@@ -1054,19 +959,11 @@ void Chess::handleRookCapture(int toSquare, int capturedType)
     }
 }
 
-// ============================================================================
-// PROMOTION HELPERS
-// ============================================================================
-
 void Chess::handlePromotion(int square, ChessPiece promotionPiece, int playerNumber)
 {
-    // Remove pawn from bitboards
     removePieceFromBitboard(square, Pawn, playerNumber);
-    
-    // Add promoted piece to bitboards
     addPieceToBitboard(square, promotionPiece, playerNumber);
     
-    // Replace pawn visual with promoted piece
     int x = square % 8;
     int y = square / 8;
     ChessSquare* promotionSquare = _grid->getSquare(x, y);
@@ -1081,27 +978,20 @@ void Chess::completePromotion(ChessPiece promotionPiece)
 {
     if (_pendingPromotionSquare == -1) return;
     
-    // Validate promotion piece
     if (promotionPiece != Queen && promotionPiece != Rook && 
         promotionPiece != Bishop && promotionPiece != Knight) {
-        promotionPiece = Queen;  // Default to Queen
+        promotionPiece = Queen;
     }
     
     handlePromotion(_pendingPromotionSquare, promotionPiece, _pendingPromotionPlayer);
     
-    // Clear pending state
     _pendingPromotionSquare = -1;
     _pendingPromotionPlayer = -1;
     _enPassantSquare = -1;
     
-    // Continue game
     endTurn();
     initializePawnMoves(getCurrentPlayer()->playerNumber());
 }
-
-// ============================================================================
-// CHECK DETECTION
-// ============================================================================
 
 bool Chess::isSquareAttacked(int square, int byPlayer) const
 {
@@ -1115,9 +1005,7 @@ bool Chess::isSquareAttacked(int square, int byPlayer) const
     uint64_t attackerQueens = getPieceBitboard(Queen, byPlayer).getData();
     uint64_t attackerKing = getPieceBitboard(King, byPlayer).getData();
     
-
     if (byPlayer == 0) {
-
         int leftPawnSquare = square - 9;
         int rightPawnSquare = square - 7;
         
@@ -1128,7 +1016,6 @@ bool Chess::isSquareAttacked(int square, int byPlayer) const
             if (attackerPawns & (1ULL << rightPawnSquare)) return true;
         }
     } else {
-
         int leftPawnSquare = square + 7; 
         int rightPawnSquare = square + 9;
         
@@ -1143,16 +1030,16 @@ bool Chess::isSquareAttacked(int square, int byPlayer) const
     if (KnightAttacks[square] & attackerKnights) {
         return true;
     }
-
+    
     if (KingAttacks[square] & attackerKing) {
         return true;
     }
-
+    
     uint64_t diagonalAttackers = attackerBishops | attackerQueens;
     if (getBishopAttacks(square, occupied) & diagonalAttackers) {
         return true;
     }
-
+    
     uint64_t orthogonalAttackers = attackerRooks | attackerQueens;
     if (getRookAttacks(square, occupied) & orthogonalAttackers) {
         return true;
@@ -1161,18 +1048,11 @@ bool Chess::isSquareAttacked(int square, int byPlayer) const
     return false;
 }
 
-/**
- * Check if a player's king is currently in check
- * Returns true if the king is under attack by any enemy piece
- */
 bool Chess::isKingInCheck(int playerNumber) const
 {
     uint64_t kingBitboard = getPieceBitboard(King, playerNumber).getData();
-    
     if (kingBitboard == 0) return false;
-
     int kingSquare = getFirstBit(kingBitboard);
-
     return isSquareAttacked(kingSquare, 1 - playerNumber);
 }
 
@@ -1202,11 +1082,9 @@ Chess::CapturedPieceInfo Chess::makeMoveBitboard(const BitMove& move, int player
         }
     }
     
-    // Handle en passant capture (captured pawn is NOT at destination)
     if (movingPiece == Pawn && move.to == _enPassantSquare && _enPassantSquare != -1) {
         int capturedPawnSquare = (playerNumber == 0) ? move.to - 8 : move.to + 8;
         
-        // Check if we haven't already captured (shouldn't happen, but safety)
         if (!captured.wasCapture) {
             captured.piece = Pawn;
             captured.player = 1 - playerNumber;
@@ -1215,12 +1093,11 @@ Chess::CapturedPieceInfo Chess::makeMoveBitboard(const BitMove& move, int player
             removePieceFromBitboard(capturedPawnSquare, Pawn, 1 - playerNumber);
         }
     }
-
+    
     if (captured.wasCapture) {
         handleRookCapture(captured.square, captured.piece);
     }
     
-    // Move the piece on bitboards
     ChessPiece pieceToPlace = move.isPromotion() 
         ? static_cast<ChessPiece>(move.promotionPiece) 
         : movingPiece;
@@ -1228,23 +1105,20 @@ Chess::CapturedPieceInfo Chess::makeMoveBitboard(const BitMove& move, int player
     removePieceFromBitboard(move.from, movingPiece, playerNumber);
     addPieceToBitboard(move.to, pieceToPlace, playerNumber);
     
-    // Handle castling rook move
     if (movingPiece == King && abs(move.to - move.from) == 2) {
         int rookFrom, rookTo;
         if (move.to > move.from) {
-            // Kingside
             rookFrom = (playerNumber == 0) ? 7 : 63;
             rookTo = (playerNumber == 0) ? 5 : 61;
         } else {
-            // Queenside
             rookFrom = (playerNumber == 0) ? 0 : 56;
             rookTo = (playerNumber == 0) ? 3 : 59;
         }
         movePieceOnBitboard(rookFrom, rookTo, Rook, playerNumber);
     }
-
+    
     updateCastlingRights(movingPiece, move.from, playerNumber);
-
+    
     if (movingPiece == Pawn && abs(move.to - move.from) == 16) {
         _enPassantSquare = (playerNumber == 0) ? move.from + 8 : move.from - 8;
     } else {
@@ -1254,40 +1128,32 @@ Chess::CapturedPieceInfo Chess::makeMoveBitboard(const BitMove& move, int player
     return captured;
 }
 
-
 void Chess::unmakeMoveBitboard(const BitMove& move, int playerNumber, const CapturedPieceInfo& captured)
 {
     ChessPiece movingPiece = static_cast<ChessPiece>(move.piece);
     
-    // Undo castling rook move first
     if (movingPiece == King && abs(move.to - move.from) == 2) {
         int rookFrom, rookTo;
         if (move.to > move.from) {
-            // Kingside
             rookFrom = (playerNumber == 0) ? 7 : 63;
             rookTo = (playerNumber == 0) ? 5 : 61;
         } else {
-            // Queenside
             rookFrom = (playerNumber == 0) ? 0 : 56;
             rookTo = (playerNumber == 0) ? 3 : 59;
         }
         movePieceOnBitboard(rookTo, rookFrom, Rook, playerNumber);
     }
     
-    // Remove piece from destination (might be promoted piece)
     ChessPiece pieceAtDestination = move.isPromotion() 
         ? static_cast<ChessPiece>(move.promotionPiece) 
         : movingPiece;
     removePieceFromBitboard(move.to, pieceAtDestination, playerNumber);
-    
-    // Restore original piece at source
     addPieceToBitboard(move.from, movingPiece, playerNumber);
     
-    // Restore captured piece
     if (captured.wasCapture) {
         addPieceToBitboard(captured.square, captured.piece, captured.player);
     }
-
+    
     _enPassantSquare = captured.previousEnPassant;
     _whiteKingMoved = captured.whiteKingMoved;
     _whiteKingsideRookMoved = captured.whiteKingsideRookMoved;
@@ -1299,15 +1165,9 @@ void Chess::unmakeMoveBitboard(const BitMove& move, int playerNumber, const Capt
 
 bool Chess::isMoveLegal(const BitMove& move, int playerNumber)
 {
-    // Make the move on bitboards
     CapturedPieceInfo captured = makeMoveBitboard(move, playerNumber);
-    
-    // Test if our king is in check after the move
     bool legal = !isKingInCheck(playerNumber);
-    
-    // Unmake the move
     unmakeMoveBitboard(move, playerNumber, captured);
-    
     return legal;
 }
 
@@ -1325,14 +1185,12 @@ std::vector<BitMove> Chess::filterLegalMoves(const std::vector<BitMove>& moves, 
     return legalMoves;
 }
 
-
 void Chess::stopGame()
 {
     _grid->forEachSquare([](ChessSquare* square, int x, int y) {
         square->destroyBit();
     });
     
-    // Reset castling rights
     _whiteKingMoved = false;
     _whiteKingsideRookMoved = false;
     _whiteQueensideRookMoved = false;
@@ -1340,12 +1198,10 @@ void Chess::stopGame()
     _blackKingsideRookMoved = false;
     _blackQueensideRookMoved = false;
     
-    // Reset special move state
     _enPassantSquare = -1;
     _pendingPromotionSquare = -1;
     _pendingPromotionPlayer = -1;
     
-    // Reset AI state
     _aiMovedThisTurn = false;
     _lastAIPlayer = -1;
 }
@@ -1353,7 +1209,6 @@ void Chess::stopGame()
 Player* Chess::ownerAt(int x, int y) const
 {
     if (x < 0 || x >= 8 || y < 0 || y >= 8) return nullptr;
-
     auto square = _grid->getSquare(x, y);
     if (!square || !square->bit()) return nullptr;
     
@@ -1363,12 +1218,9 @@ Player* Chess::ownerAt(int x, int y) const
 Player* Chess::checkForWinner()
 {
     int currentPlayer = getCurrentPlayer()->playerNumber();
-    
-    // Generate all legal moves for current player
     std::vector<BitMove> legalMoves = generateAllLegalMoves(currentPlayer);
     
     if (legalMoves.empty() && isKingInCheck(currentPlayer)) {
-        // Current player is checkmated
         return getPlayerAt(1 - currentPlayer);
     }
     
@@ -1378,11 +1230,8 @@ Player* Chess::checkForWinner()
 bool Chess::checkForDraw()
 {
     int currentPlayer = getCurrentPlayer()->playerNumber();
-    
-    // Generate all legal moves for current player
     std::vector<BitMove> legalMoves = generateAllLegalMoves(currentPlayer);
     
-    // If no legal moves and king not in check
     if (legalMoves.empty() && !isKingInCheck(currentPlayer)) {
         return true;
     }
@@ -1390,14 +1239,12 @@ bool Chess::checkForDraw()
     int whitePieceCount = countOnes(getPlayerPieces(0));
     int blackPieceCount = countOnes(getPlayerPieces(1));
     
-    // King vs King
     if (whitePieceCount == 1 && blackPieceCount == 1) {
         return true;
     }
     
     return false;
 }
-
 
 char Chess::pieceNotation(int x, int y) const
 {
@@ -1426,7 +1273,7 @@ std::string Chess::stateString()
     });
     
     return s;
-        }
+}
 
 void Chess::setStateString(const std::string &s)
 {
